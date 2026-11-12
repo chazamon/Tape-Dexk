@@ -70,7 +70,10 @@ html,body{height:100%;background:#1b1a18;color:#e9e1cf;font-family:"Archivo Narr
 .app{display:grid!important;grid-template-rows:auto minmax(0,1fr) auto auto;grid-template-rows:auto auto minmax(0,1fr) auto auto;grid-template-areas:"top" "track" "well" "keys" "hint"}
 @media (orientation:landscape){
   .app{max-width:none;padding:calc(env(safe-area-inset-top) + 8px) calc(env(safe-area-inset-right) + 14px) calc(env(safe-area-inset-bottom) + 8px) calc(env(safe-area-inset-left) + 14px)}
-  .top{padding:0 4px 8px}.hint{margin-top:8px;font-size:13px}.well{padding:8px}
+  .top{padding:0 4px 8px}.hint{display:none}.well{padding:6px}
+  .app{grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);column-gap:22px;
+    grid-template-areas:"top track" "well well"}
+  .top{padding:0 0 8px;gap:16px}.track{padding:0 4px 8px}
 }
 .well{position:relative}
 @keyframes nudge{0%,100%{filter:none}50%{filter:drop-shadow(0 0 8px rgba(242,179,61,.95)) brightness(1.06)}}

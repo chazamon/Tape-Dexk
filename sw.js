@@ -1,5 +1,5 @@
 // Tape deck offline cache. Bump VERSION when the app changes.
-const VERSION = 'tape-v1';
+const VERSION = 'tape-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
