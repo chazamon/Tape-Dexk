@@ -425,7 +425,8 @@ function drawTrack(){const d=audio.duration,ok=tracks.length&&isFinite(d)&&d>0,p
   r.addEventListener('pointermove',e=>{if(on)seek(e)});
   const up=()=>{if(!on)return;on=false;clunk();if(was)play()};r.addEventListener('pointerup',up);r.addEventListener('pointercancel',up)})();
 /* ---------- install as an app ---------- */
-if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
+  let reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!reloaded&&audio.paused){reloaded=true;location.reload()}});
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 /* ---------- boot ---------- */
 (async()=>{setLabel();renderList();
