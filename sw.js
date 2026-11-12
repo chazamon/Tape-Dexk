@@ -1,5 +1,5 @@
 // Tape deck offline cache. Bump VERSION when the app changes.
-const VERSION = 'tape-v3';
+const VERSION = 'tape-v4';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -21,7 +21,7 @@ self.addEventListener('fetch', e => {
     return;
   }
   // Fonts and the app's own files: serve from cache, refresh in the background.
-  if (url.origin === location.origin || url.host.endsWith('fonts.googleapis.com') || url.host.endsWith('fonts.gstatic.com')) {
+  if (url.origin === location.origin || url.host.endsWith('fonts.googleapis.com') || url.host === 'cdn.jsdelivr.net' || url.host.endsWith('fonts.gstatic.com')) {
     e.respondWith(caches.open(VERSION).then(async c => {
       const hit = await c.match(req);
       const net = fetch(req).then(r => { if (r.ok || r.type === 'opaque') c.put(req, r.clone()); return r; }).catch(() => hit);
