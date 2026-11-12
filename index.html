@@ -11,7 +11,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Share+Tech+Mono&family=Archivo+Narrow:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Kalam:wght@400;700&family=Share+Tech+Mono&family=Archivo+Narrow:wght@500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#1b1a18;color:#e9e1cf;font-family:"Archivo Narrow",sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none}
@@ -20,6 +20,11 @@ html,body{height:100%;background:#1b1a18;color:#e9e1cf;font-family:"Archivo Narr
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 4px 14px}
 .stamp{font-weight:700;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8f887b;line-height:1.5}
 .stamp b{color:#d24a32;font-weight:700}
+.sws2{display:flex;gap:6px;margin-bottom:6px}
+.led{appearance:none;border:1px solid #000;background:#1a1918;color:#8f887b;font:700 10px "Archivo Narrow",sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:0 9px;height:30px;border-radius:4px;display:flex;align-items:center;gap:6px;cursor:pointer;box-shadow:0 2px 0 #000,inset 0 1px 0 rgba(255,255,255,.06)}
+.led i{width:7px;height:7px;border-radius:50%;background:#3a2a10;box-shadow:inset 0 1px 1px rgba(0,0,0,.6)}
+.led.on{color:#e9e1cf}.led.on i{background:#f2b33d;box-shadow:0 0 6px rgba(242,179,61,.9)}
+.led:active{transform:translateY(2px);box-shadow:none}
 .counter{display:flex;gap:3px;background:#0d0d0c;border:1px solid #000;border-radius:4px;padding:5px 7px;box-shadow:inset 0 2px 6px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.06)}
 .counter span{font-family:"Share Tech Mono",monospace;font-size:22px;line-height:1;color:#f2b33d;text-shadow:0 0 6px rgba(242,179,61,.45);min-width:.62em;text-align:center}
 .well{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:#141312;border-radius:14px;padding:18px 12px;
@@ -29,7 +34,7 @@ html,body{height:100%;background:#1b1a18;color:#e9e1cf;font-family:"Archivo Narr
 #tape.out{transform:translateY(110%);transition:transform .28s cubic-bezier(.5,0,.9,.4)}
 .hand{font-family:"Permanent Marker",cursive;fill:#24317a}
 .hit{fill:transparent;cursor:grab}
-.keys{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:16px;padding:8px;background:#0f0e0d;border-radius:8px;box-shadow:inset 0 3px 8px rgba(0,0,0,.9)}
+.keys{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:16px;padding:8px;background:#0f0e0d;border-radius:8px;box-shadow:inset 0 3px 8px rgba(0,0,0,.9)}
 .key{appearance:none;border:0;height:76px;border-radius:4px 4px 7px 7px;background:linear-gradient(#f4ecda,#e2d6bb);color:#2a2622;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
   box-shadow:0 7px 0 #a99c80,0 9px 6px rgba(0,0,0,.5),inset 0 1px 0 #fff;transition:transform .06s,box-shadow .06s;cursor:pointer}
 .key svg{width:22px;height:22px}
@@ -76,7 +81,17 @@ html,body{height:100%;background:#1b1a18;color:#e9e1cf;font-family:"Archivo Narr
     grid-template-areas:"top track" "well well"}
   .top{padding:0 0 8px;gap:16px}.track{padding:0 4px 8px}
 }
-.well{position:relative}
+.well{position:relative;perspective:1100px}
+.back{position:absolute;display:none;z-index:2;border-radius:3.5%/5.5%;padding:2.2% 2.2% 0;box-shadow:0 8px 14px rgba(0,0,0,.6);border:2px solid #1d2024;transform-origin:50% 50%}
+.back.show{display:block}
+.jcard{position:absolute;left:5%;right:5%;top:5%;bottom:var(--jb,6%);background:#f1e7cc;border-radius:6px;display:flex;flex-direction:column;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.jh{display:flex;align-items:baseline;gap:10px;padding:10px 14px 6px;border-bottom:3px solid var(--stripe,#d24a32);font-family:"Permanent Marker",cursive;color:#24317a;font-size:20px;white-space:nowrap;overflow:hidden}
+.jh #lyTitle{overflow:hidden;text-overflow:ellipsis}
+.jside{color:#d24a32;font-size:26px}
+.ly{flex:1;overflow-y:auto;padding:10px 16px 18px;font-family:"Kalam",cursive;font-size:17px;line-height:30px;color:#24317a;white-space:pre-wrap;background:repeating-linear-gradient(#f1e7cc 0 29px,#c9d3e3 29px 30px);background-attachment:local;-webkit-overflow-scrolling:touch}
+.ly .sec{display:block;font-family:"Archivo Narrow",sans-serif;font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#d24a32}
+.ly .none{color:#8f7f60}
+.keys.onTape{z-index:3}
 @keyframes nudge{0%,100%{filter:none}50%{filter:drop-shadow(0 0 8px rgba(242,179,61,.95)) brightness(1.06)}}
 .key.nudge{animation:nudge 1.6s ease-in-out infinite}
 .key.nudge small{color:#b5651d}
@@ -126,7 +141,7 @@ html,body{height:100%;background:#1b1a18;color:#e9e1cf;font-family:"Archivo Narr
 <body>
 <div class="app">
   <div class="top">
-    <div class="stamp">auto stop · normal<br><b>&#9679;</b> <span id="status">no tape</span></div>
+    <div class="stamp"><div class="sws2"><button class="led" id="swShuffle" aria-pressed="false"><i></i>shuffle</button><button class="led" id="swRepeat"><i></i><span id="repTxt">repeat all</span></button></div><b>&#9679;</b> <span id="status">no tape</span></div>
     <div class="counter" aria-label="time"><span id="c0">0</span><span>:</span><span id="c1">0</span><span id="c2">0</span></div>
   </div>
 
@@ -135,6 +150,7 @@ html,body{height:100%;background:#1b1a18;color:#e9e1cf;font-family:"Archivo Narr
     <span id="tLen">0:00</span></div>
 
   <div class="well">
+    <div class="back" id="back" aria-live="polite"><div class="jcard"><div class="jh"><span class="jside">B</span><span id="lyTitle"></span></div><div class="ly" id="ly"></div></div></div>
     <svg id="tape" viewBox="0 0 400 256" aria-label="cassette — tap a reel to play, drag it round to wind">
       <defs>
         <clipPath id="win"><rect x="96" y="70" width="208" height="70" rx="35"/></clipPath>
@@ -190,6 +206,7 @@ html,body{height:100%;background:#1b1a18;color:#e9e1cf;font-family:"Archivo Narr
     <button class="key play" id="kPlay" aria-label="play"><svg viewBox="0 0 24 24" fill="currentColor"><path id="playIcon" d="M7 4v16l13-8z"/></svg><small>play</small></button>
     <button class="key" id="kNext" aria-label="next"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg><small>next</small></button>
     <button class="key" id="kList" aria-label="track list"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><small>list</small></button>
+    <button class="key" id="kFlip" aria-label="flip for lyrics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a8 8 0 0 1 14-3l2 2M20 15a8 8 0 0 1-14 3l-2-2M20 4v4h-4M4 20v-4h4"/></svg><small>lyrics</small></button>
     <button class="key" id="kEject" aria-label="load songs"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l8 10H4zM4 17h16v3H4z"/></svg><small>load</small></button>
   </div>
   <div class="hint" id="hint">tap a reel to play · spin it to wind</div>
@@ -254,7 +271,7 @@ async function insertTape(id,animate=true){
   const t=tapeOf(id);if(!t)return;pause();
   const tp=$('#tape');if(animate){clunk(true);tp.classList.add('out');await new Promise(r=>setTimeout(r,300))}
   curTape=id;try{localStorage.setItem('tapeCur',id)}catch(e){}
-  tracks=tapeTracks(id);idx=0;
+  tracks=tapeTracks(id);idx=0;order=[];
   if(url)URL.revokeObjectURL(url);url=null;audio.removeAttribute('src');
   paintTape();if(tracks.length)loadTrack(0,false);else{setLabel();setPlayUI();renderList()}
   if(animate){tp.classList.remove('out');tp.classList.add('pop');setTimeout(()=>tp.classList.remove('pop'),260)}
@@ -328,13 +345,33 @@ function setMeta(){setArt();if(!('mediaSession' in navigator)||!tracks.length)re
 function loadTrack(i,autoplay){
   if(!tracks.length)return;idx=(i+tracks.length)%tracks.length;
   if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(tracks[idx].blob);audio.src=url;
-  setLabel();setMeta();renderList();if(autoplay)play();else setPlayUI();
+  setLabel();setMeta();renderList();if(flipped)fillBack();if(autoplay)play();else setPlayUI();
 }
 function play(){if(!tracks.length){openPicker();return}ensureAudio();audio.play().catch(()=>toast('tap play again'))}
 function pause(){audio.pause()}
 function toggle(){audio.paused?play():pause()}
-function prev(){if(!tracks.length)return;if(audio.currentTime>3){audio.currentTime=0;return}loadTrack(idx-1,!audio.paused)}
-function next(auto){if(!tracks.length)return;if(auto&&idx===tracks.length-1){loadTrack(0,false);toast('end of tape');return}loadTrack(idx+1,auto||!audio.paused)}
+/* shuffle + repeat */
+let shuffle=false,repeat='all',order=[];
+try{shuffle=localStorage.getItem('tapeShuffle')==='1';repeat=localStorage.getItem('tapeRepeat')||'all'}catch(e){}
+function makeOrder(){const n=tracks.length,a=[...Array(n).keys()];
+  if(shuffle){for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+    const k=a.indexOf(idx);if(k>0){a.splice(k,1);a.unshift(idx)}}
+  order=a}
+function step(dir){if(order.length!==tracks.length)makeOrder();let p=order.indexOf(idx);if(p<0){makeOrder();p=0}return p+dir}
+function drawModes(){$('#swShuffle').classList.toggle('on',shuffle);$('#swShuffle').setAttribute('aria-pressed',shuffle);
+  $('#swRepeat').classList.toggle('on',repeat!=='off');$('#repTxt').textContent='repeat '+repeat}
+function prev(){if(!tracks.length)return;if(audio.currentTime>3){audio.currentTime=0;return}
+  let p=step(-1);if(p<0)p=order.length-1;loadTrack(order[p],!audio.paused)}
+function next(auto){if(!tracks.length)return;
+  if(auto&&repeat==='one'){audio.currentTime=0;play();return}
+  let p=step(1);
+  if(p>=order.length){if(auto&&repeat==='off'){loadTrack(order[0],false);toast('end of tape');return}
+    if(shuffle){const last=idx;makeOrder();if(order.length>1&&order[0]===last)order.push(order.shift())}p=0}
+  loadTrack(order[p],auto||!audio.paused)}
+$('#swShuffle').onclick=()=>{clunk();shuffle=!shuffle;makeOrder();try{localStorage.setItem('tapeShuffle',shuffle?'1':'0')}catch(e){};drawModes();toast(shuffle?'shuffle on':'shuffle off')};
+$('#swRepeat').onclick=()=>{clunk();repeat={all:'one',one:'off',off:'all'}[repeat];try{localStorage.setItem('tapeRepeat',repeat)}catch(e){};drawModes();
+  toast({all:'repeat the whole tape',one:'repeat this song',off:'stop at the end of the tape'}[repeat])};
+drawModes();
 audio.addEventListener('play',setPlayUI);audio.addEventListener('pause',setPlayUI);
 audio.addEventListener('ended',()=>next(true));
 audio.addEventListener('error',()=>{if(tracks.length&&audio.src)toast("can't play that one — skipping")});
@@ -366,10 +403,13 @@ async function readTags(t){const lib=await loadTagLib();if(!lib)return false;
   return new Promise(res=>{try{lib.read(t.blob,{onSuccess:({tags})=>{
       if(tags.title&&tags.title.trim())t.name=tags.title.trim();
       if(tags.artist&&tags.artist.trim())t.artist=tags.artist.trim();
+      let ly=tags.lyrics&&(typeof tags.lyrics==='string'?tags.lyrics:tags.lyrics.lyrics);
+      if(!ly&&tags.TXXX){for(const x of [].concat(tags.TXXX)){const d=x&&x.data;if(d&&/lyric/i.test(d.user_description||'')){ly=d.data;break}}}
+      if(ly&&String(ly).trim())t.lyrics=String(ly).trim();
       if(tags.picture&&tags.picture.data&&tags.picture.data.length)t.art=new Blob([new Uint8Array(tags.picture.data)],{type:tags.picture.format||'image/jpeg'});
-      t.tagged=true;res(true)},onError:()=>{t.tagged=true;res(true)}})}catch(e){res(false)}})}
-async function tagOld(){for(const t of allTracks.filter(x=>!x.tagged)){if(!(await readTags(t)))return;await dbPut(t);
-  if(tracks[idx]===t){setLabel();setMeta()}}renderList()}
+      t.tagged=true;t.tagVer=2;res(true)},onError:()=>{t.tagged=true;t.tagVer=2;res(true)}})}catch(e){res(false)}})}
+async function tagOld(){for(const t of allTracks.filter(x=>x.tagVer!==2)){if(!(await readTags(t)))return;await dbPut(t);
+  if(tracks[idx]===t){setLabel();setMeta();fillBack()}}renderList()}
 
 /* ---------- j-card list ---------- */
 let view='songs',editing=false;const thumbs={};
@@ -525,7 +565,7 @@ requestAnimationFrame(frame);
 
 
 /* ---------- orientation: stand the tape up when the space is tall ---------- */
-function orient(){const w=$('.well'),r=w.getBoundingClientRect(),tall=r.height>r.width*1.05;
+function orient(){setTimeout(()=>{if(flipped)placeBack()},60);const w=$('.well'),r=w.getBoundingClientRect(),tall=r.height>r.width*1.05;
   $('#tape').setAttribute('viewBox',tall?'0 0 256 400':'0 0 400 256');
   if(tall)$('#rot').setAttribute('transform','translate(256 0) rotate(90)');else $('#rot').removeAttribute('transform');
   const k=$('.keys');
@@ -557,6 +597,35 @@ function drawTrack(){const d=audio.duration,ok=tracks.length&&isFinite(d)&&d>0,p
   r.addEventListener('pointerdown',e=>{if(!tracks.length)return;on=true;was=!audio.paused;audio.pause();r.setPointerCapture(e.pointerId);seek(e)});
   r.addEventListener('pointermove',e=>{if(on)seek(e)});
   const up=()=>{if(!on)return;on=false;clunk();if(was)play()};r.addEventListener('pointerup',up);r.addEventListener('pointercancel',up)})();
+/* ---------- flip to the back for lyrics ---------- */
+let flipped=false,flipping=false;
+function fillBack(){const t=tracks[idx],ly=$('#ly');$('#lyTitle').textContent=t?t.name:'blank tape';ly.innerHTML='';
+  if(!t||!t.lyrics){const p=document.createElement('span');p.className='none';
+    p.textContent=t?"no lyrics on this song yet.\n\nadd them in Mp3tag: Extended Tags (Alt+T), new field UNSYNCEDLYRICS, paste the words, save, then load the song again.":'load some songs first.';ly.appendChild(p);return}
+  t.lyrics.split(/\r?\n/).forEach(line=>{const m=line.trim().match(/^\[(.+)\]$/);
+    if(m){const h=document.createElement('span');h.className='sec';h.textContent=m[1];ly.appendChild(h)}
+    else ly.appendChild(document.createTextNode(line+'\n'))});ly.scrollTop=0}
+function placeBack(){const b=$('#back'),m=$('#rot').getScreenCTM();if(!m)return;const svg=$('#tape');
+  const pts=[[2,2],[398,2],[2,254],[398,254]].map(([x,y])=>{const q=svg.createSVGPoint();q.x=x;q.y=y;return q.matrixTransform(m)});
+  const wr=$('.well').getBoundingClientRect(),xs=pts.map(p=>p.x-wr.left),ys=pts.map(p=>p.y-wr.top),l=Math.min(...xs),t=Math.min(...ys);
+  Object.assign(b.style,{left:l+'px',top:t+'px',width:(Math.max(...xs)-l)+'px',height:(Math.max(...ys)-t)+'px'});
+  b.style.background=`linear-gradient(${$('#sh0').getAttribute('stop-color')},${$('#sh1').getAttribute('stop-color')})`;
+  const tp=tapeOf(curTape);b.style.setProperty('--stripe',tp?tp.color:'#d24a32');
+  b.style.setProperty('--jb',$('.keys').classList.contains('onTape')?'31%':'5%')}
+function flip(){if(flipping)return;flipping=true;const tp=$('#tape'),b=$('#back'),T=170;if(!flipped)placeBack();
+  const out=flipped?b:tp,inn=flipped?tp:b;
+  out.style.transition=`transform ${T}ms ease-in`;out.style.transform='perspective(1100px) rotateY(90deg)';
+  setTimeout(()=>{
+    if(!flipped){fillBack();b.classList.add('show');tp.style.visibility='hidden'}
+    else{b.classList.remove('show');tp.style.visibility=''}
+    out.style.transition='none';out.style.transform='';
+    inn.style.transition='none';inn.style.transform='perspective(1100px) rotateY(-90deg)';void inn.offsetWidth;
+    inn.style.transition=`transform ${T}ms ease-out`;inn.style.transform='perspective(1100px) rotateY(0deg)';
+    flipped=!flipped;$('#kFlip').classList.toggle('down',flipped);
+    setTimeout(()=>{inn.style.transition='';inn.style.transform='';flipping=false},T+20)},T)}
+$('#kFlip').onclick=()=>{clunk();flip()};
+addEventListener('resize',()=>{if(flipped)placeBack()});
+
 /* ---------- install as an app ---------- */
 if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
   let reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!reloaded&&audio.paused){reloaded=true;location.reload()}});
